@@ -13,3 +13,4 @@ function pullPokemon(array) {
   let randomNumber = Math.floor(Math.random() * (arrayLength + 1));
   console.log(randomNumber);
 }
+getData(URL);
