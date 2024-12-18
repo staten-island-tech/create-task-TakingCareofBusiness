@@ -1,9 +1,10 @@
-import "./style.css";
+//import "./style.css";
 const URl = "https://pokeapi.co/api/v2/pokemon";
 async function getData(URL) {
   try {
     const response = await fetch(URL);
     const pokemon = await response.json();
+    console.log(pokemon);
     pullPokemon(pokemon);
   } catch (error) {}
 }
