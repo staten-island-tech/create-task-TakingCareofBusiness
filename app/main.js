@@ -12,8 +12,7 @@ function pullPokemon(pokemon) {
   let max = pokemon.count;
   console.log(max);
   let randomNumber = Math.floor(Math.random() * (max + 1));
-  pulledPokemon;
+  for
   console.log(randomNumber);
 }
-console.log("hi");
 getData(URL);
