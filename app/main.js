@@ -12,12 +12,12 @@ function pullPokemon(pokemon) {
   let max = pokemon.count;
   let randomNumber = Math.floor(Math.random() * (max + 1));
   console.log(randomNumber);
-  console.log(pokemonpokemon["results"][randomNumber]);
+  let skibidi_number = randomNumber - (randomNumber % 20);
+  return `https://pokeapi.co/api/v2/pokemon?offset=${skibidi_number}&limit=20`;
   /*
   let pulledPokemon = Object.values(pokemon).filter(
     (mon) => mon.results === randomNumber
   );
   */
-  console.log("skibidi");
 }
 getData(URL);
