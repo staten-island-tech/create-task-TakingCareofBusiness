@@ -17,3 +17,5 @@ function pullPokemon(pokemon) {
   return `https://pokeapi.co/api/v2/pokemon/${randomNumber}`;
 }
 getData(URL);
+// blue is #3468a7
+//yellow is #fbcb0f
