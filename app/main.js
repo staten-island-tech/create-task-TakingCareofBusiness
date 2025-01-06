@@ -1,10 +1,10 @@
-//import "./style.css";
+import "./style.css";
 const URL = "https://pokeapi.co/api/v2/pokemon";
 async function getData(URL) {
   try {
     const originalResponse = await fetch(URL);
     const pokemon = await originalResponse.json();
-    let usableAPI = pullPokemon(basicPokemon);
+    let usableAPI = pullPokemon(pokemon);
     const response = await fetch(usableAPI);
     const pulledPokemon = await response.json();
   } catch (error) {}
@@ -14,7 +14,10 @@ function pullPokemon(pokemon) {
   let max = pokemon.count;
   let randomNumber = Math.floor(Math.random() * (max + 1));
   console.log(randomNumber);
-  return `https://pokeapi.co/api/v2/pokemon/${randomNumber}`;
+  return (
+    `https://pokeapi.co/api/v2/pokemon-species/${randomNumber}`,
+    `https://pokeapi.co/api/v2/pokemon/${randomNumber}`
+  );
 }
 getData(URL);
 // blue is #3468a7
