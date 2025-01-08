@@ -2,6 +2,15 @@ body * {
   font-size: 10px;
   margin:0;
   padding:0;
-  background-color:#3468a7;
   color:black;
+}
+body {
+  background-color: #3468a7;
+}
+.submitButton {
+  height: 1.5rem;
+  width: 12rem;
+}
+.inputForm {
+  background-color:white;
 }

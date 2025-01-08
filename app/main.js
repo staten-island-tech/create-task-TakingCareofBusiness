@@ -1,4 +1,8 @@
 import "./style.css";
+const DOMSelectors = {
+  form: document.querySelector(".userInput"),
+  button: document.querySelector(".submitButton"),
+};
 const URL = "https://pokeapi.co/api/v2/pokemon?limit=100000&offset=0";
 let guessed = [];
 let pulled = [];
@@ -22,6 +26,11 @@ function pullPokemon() {
     `https://pokeapi.co/api/v2/pokemon/${randomNumber}`,
   ];
   return linkList;
+}
+function validGuess() {
+  DOMSelectors.form.addEventListener("submit", function (event) {
+    event.preventDefault();}
+  let input = 
 }
 function hintGenerator(info1, info2) {}
 getData();
