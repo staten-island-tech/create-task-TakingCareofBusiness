@@ -30,7 +30,7 @@ function pullPokemon() {
 function validGuess() {
   DOMSelectors.form.addEventListener("submit", function (event) {
     event.preventDefault();}
-  let input = 
+  let input = event.target.va;ue
 }
 function hintGenerator(info1, info2) {}
 getData();
