@@ -31,22 +31,25 @@ function pullPokemon() {
   return linkList;
 }
 function validGuess(allNames) {
-  console.log("skibidi");
   DOMSelectors.button.addEventListener("click", function (event) {
-    console.log("Ou");
     event.preventDefault();
     let pokemonStatus = false;
+    let errorMessage = false;
     let input = DOMSelectors.textBar.value;
     allNames.forEach((title) => {
       if (input === title.name) {
         pokemonStatus = true;
       }
     });
-    if (pokemonStatus != true) {
+    DOMSelectors.textBar.text = "";
+    if (!pokemonStatus && !errorMessage) {
       DOMSelectors.textBar.insertAdjacentHTML(
         "afterend",
         "<p>Please input a real Pokemon name</p>"
       );
+      errorMessage = true;
+    }
+    if (pokemonStatus && errorMessage) {
     }
   });
 }
