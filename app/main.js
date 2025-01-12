@@ -3,6 +3,7 @@ const DOMSelectors = {
   form: document.querySelector(".userInput"),
   button: document.querySelector(".submitButton"),
   textBar: document.querySelector(".inputForm"),
+  errorText: document.querySelector(".errorText"),
 };
 const URL = "https://pokeapi.co/api/v2/pokemon?limit=100000&offset=0";
 let guessed = [];
@@ -43,11 +44,10 @@ function validGuess(allNames) {
     });
     if (!pokemonStatus && errorMessage === 0) {
       DOMSelectors.textBar.value = "";
-      DOMSelectors.textBar.insertAdjacentHTML(
+      DOMSelectors.errorText.insertAdjacentHTML(
         "afterend",
         "<p class='errorText'>Please input a real Pokemon name</p>"
       );
-
       errorMessage = 1;
     }
     if (!pokemonStatus && !(errorMessage === 0)) {
@@ -55,7 +55,7 @@ function validGuess(allNames) {
     }
     if (pokemonStatus && !(errorMessage === 0)) {
       DOMSelectors.textBar.value = "";
-      document.querySelector(".errorText").value = "What da hell";
+      DOMSelectors.errorText.innerHTML = "";
       errorMessage = 0;
     }
   });
