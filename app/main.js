@@ -7,6 +7,7 @@ const DOMSelectors = {
 const URL = "https://pokeapi.co/api/v2/pokemon?limit=100000&offset=0";
 let guessed = [];
 let pulled = [];
+let errorMessage = 0;
 async function getData(URL) {
   try {
     let usableAPI = pullPokemon();
@@ -34,22 +35,28 @@ function validGuess(allNames) {
   DOMSelectors.button.addEventListener("click", function (event) {
     event.preventDefault();
     let pokemonStatus = false;
-    let errorMessage = false;
     let input = DOMSelectors.textBar.value;
     allNames.forEach((title) => {
       if (input === title.name) {
         pokemonStatus = true;
       }
     });
-    DOMSelectors.textBar.text = "";
-    if (!pokemonStatus && !errorMessage) {
+    if (!pokemonStatus && errorMessage === 0) {
+      DOMSelectors.textBar.value = "";
       DOMSelectors.textBar.insertAdjacentHTML(
         "afterend",
-        "<p>Please input a real Pokemon name</p>"
+        "<p class='errorText'>Please input a real Pokemon name</p>"
       );
-      errorMessage = true;
+
+      errorMessage = 1;
     }
-    if (pokemonStatus && errorMessage) {
+    if (!pokemonStatus && !(errorMessage === 0)) {
+      DOMSelectors.textBar.value = "";
+    }
+    if (pokemonStatus && !(errorMessage === 0)) {
+      DOMSelectors.textBar.value = "";
+      document.querySelector(".errorText").value = "What da hell";
+      errorMessage = 0;
     }
   });
 }
