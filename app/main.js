@@ -36,27 +36,32 @@ function validGuess(allNames) {
   DOMSelectors.button.addEventListener("click", function (event) {
     event.preventDefault();
     let pokemonStatus = false;
-    let input = DOMSelectors.textBar.value;
+    let inputted = DOMSelectors.textBar.value;
+    console.log(inputted);
+    let input = inputted.toLowerCase();
     allNames.forEach((title) => {
       if (input === title.name) {
         pokemonStatus = true;
       }
     });
-    if (!pokemonStatus && errorMessage === 0) {
+    if (!pokemonStatus) {
       DOMSelectors.textBar.value = "";
-      DOMSelectors.errorText.insertAdjacentHTML(
-        "afterend",
-        "<p class='errorText'>Please input a real Pokemon name</p>"
-      );
-      errorMessage = 1;
+      if (errorMessage === 0) {
+        DOMSelectors.errorText.insertAdjacentHTML(
+          "afterend",
+          "<p class='error'>Please input a real Pokemon name</p>"
+        );
+        errorMessage = 1;
+      }
     }
-    if (!pokemonStatus && !(errorMessage === 0)) {
+    if (pokemonStatus) {
       DOMSelectors.textBar.value = "";
-    }
-    if (pokemonStatus && !(errorMessage === 0)) {
-      DOMSelectors.textBar.value = "";
-      DOMSelectors.errorText.innerHTML = "";
-      errorMessage = 0;
+      if (errorMessage != 0) {
+        let errors = document.querySelector(".error");
+        errors.remove();
+        errorMessage = 0;
+      }
+      guessed.push(input);
     }
   });
 }
