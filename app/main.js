@@ -46,8 +46,8 @@ function pullPokemon() {
 function validGuess(allNames, info1, info2) {
   console.log(info1.name);
   let gameOver = false;
-  DOMSelectors.button.addEventListener("click", function (event) {
-    event.preventDefault();
+  DOMSelectors.button.addEventListener("click", function (submit) {
+    submit.preventDefault();
     let pokemonStatus = false;
     let inputted = DOMSelectors.textBar.value;
     let input = inputted.toLowerCase();
@@ -87,9 +87,13 @@ function validGuess(allNames, info1, info2) {
         DOMSelectors.textBar.value = "";
         DOMSelectors.endContainer.insertAdjacentHTML(
           "afterend",
-          "<p class='endMessage'>Congratulations! You guessed the Pokemon!</p>"
+          "<p class='endMessage'>Congratulations! You guessed the Pokemon!</p><div class='buttonStorage'><button class='newGameButton' type='button'>New Game</button></div>"
         );
         gameOver = true;
+        let resetButton = document.querySelector(".newGameButton");
+        resetButton.addEventListener("click", function () {
+          resetGame();
+        });
       }
     }
   });
@@ -140,6 +144,24 @@ function hintGenerator(info1, info2) {
       )} </p>`
     );
   }
+}
+function resetGame() {
+  // Reset the game state
+  guessed = [];
+  errorMessage = 0;
+
+  // Clear all the hints
+  document.querySelectorAll(".hint").forEach((hint) => hint.remove());
+
+  // Remove the end message and reset button
+  let oldMessage = document.querySelector(".endMessage");
+  let oldButton = document.querySelector(".newGameButton");
+  if (oldMessage) oldMessage.remove();
+  if (oldButton) oldButton.remove();
+
+  // Re-fetch the Pokémon data and start a new game
+  pulled = []; // Clear previously pulled Pokémon
+  getData(URL); // Start a new game by fetching new Pokémon
 }
 getData(URL);
 // blue is #3468a7
