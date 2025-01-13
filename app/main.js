@@ -4,6 +4,7 @@ const DOMSelectors = {
   button: document.querySelector(".submitButton"),
   textBar: document.querySelector(".inputForm"),
   errorText: document.querySelector(".errorText"),
+  endContainer: document.querySelector(".endContainer"),
   hint1: document.querySelector(".hint1"),
   hint2: document.querySelector(".hint2"),
   hint3: document.querySelector(".hint3"),
@@ -13,13 +14,13 @@ const DOMSelectors = {
 const URL = "https://pokeapi.co/api/v2/pokemon?limit=100000&offset=0";
 let guessed = [];
 let pulled = [];
+let gameEnd = false;
 let errorMessage = 0;
 async function getData(URL) {
   try {
     let usableAPI = pullPokemon();
     let response1 = await fetch(usableAPI[0]);
     let pulledPokemonInfo1 = await response1.json();
-    pulled.push(pulledPokemonInfo1.name);
     let response2 = await fetch(usableAPI[1]);
     let pulledPokemonInfo2 = await response2.json();
     let responseFull = await fetch(URL);
@@ -28,17 +29,24 @@ async function getData(URL) {
     validGuess(allNames, pulledPokemonInfo1, pulledPokemonInfo2);
   } catch (error) {}
 }
-//pull a random pokemon from api, have input bar for name of pokemon, only accept valid name of pokemon, add inputted pokemon to an array, make sure user doesn't repeat their guesses, have a separate list to make sure the same pokemon isnt pulled, when user inputs a guess compare the categories of the guess with the pulled pokemon using api data, show a vicotry screen if user gets it right, show a defeat screen if they dont get it in 6 guesses
+//pull a random pokemon from api, have input bar for name of pokemon, only accept valid name of pokemon, add inputted pokemon to an array, make sure user doesn't repeat their guesses, have a separate list to make sure the same pokemon isnt pulled, when user inputs a guess compare the categories of the guess with the pulled pokemon using api data, show a victory screen if user gets it right, show a defeat screen if they dont get it in 6 guesses
 function pullPokemon() {
-  let randomNumber = Math.floor(Math.random() * (1025 + 1));
-  let linkList = [
-    `https://pokeapi.co/api/v2/pokemon-species/${randomNumber}`,
-    `https://pokeapi.co/api/v2/pokemon/${randomNumber}`,
-  ];
-  return linkList;
+  let newNumber = false;
+  while (newNumber === false) {
+    let randomNumber = Math.floor(Math.random() * (1025 + 1));
+    if (!pulled.includes(randomNumber)) {
+      pulled.push(randomNumber);
+      let linkList = [
+        `https://pokeapi.co/api/v2/pokemon-species/${randomNumber}`,
+        `https://pokeapi.co/api/v2/pokemon/${randomNumber}`,
+      ];
+      return linkList;
+    }
+  }
 }
 function validGuess(allNames, info1, info2) {
   console.log(info1.name);
+  gameEnd = false;
   DOMSelectors.button.addEventListener("click", function (event) {
     event.preventDefault();
     let pokemonStatus = false;
@@ -59,7 +67,7 @@ function validGuess(allNames, info1, info2) {
         errorMessage = 1;
       }
     }
-    if (pokemonStatus && !guessed.includes(input)) {
+    if (pokemonStatus && !guessed.includes(input) && !(input === info1.name)) {
       DOMSelectors.textBar.value = "";
       if (errorMessage != 0) {
         let errors = document.querySelector(".error");
@@ -70,6 +78,14 @@ function validGuess(allNames, info1, info2) {
       if (!(guessed.length === 0)) {
         hintGenerator(info1, info2);
       }
+    }
+    if (input === info1.name) {
+      DOMSelectors.textBar.value = "";
+      DOMSelectors.endContainer.insertAdjacentHTML(
+        "afterend",
+        "<p class='endMessage'>Congratulations! You guessed the Pokemon!</p>"
+      );
+      gameEnd = true;
     }
   });
 }
