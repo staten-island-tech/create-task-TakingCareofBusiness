@@ -1,6 +1,5 @@
 import "./style.css";
 const DOMSelectors = {
-  form: document.querySelector(".userInput"),
   button: document.querySelector(".submitButton"),
   textBar: document.querySelector(".inputForm"),
   errorText: document.querySelector(".errorText"),
@@ -28,7 +27,6 @@ async function getData(URL) {
     validGuess(allNames, pulledPokemonInfo1, pulledPokemonInfo2);
   } catch (error) {}
 }
-//pull a random pokemon from api, have input bar for name of pokemon, only accept valid name of pokemon, add inputted pokemon to an array, make sure user doesn't repeat their guesses, have a separate list to make sure the same pokemon isnt pulled, when user inputs a guess compare the categories of the guess with the pulled pokemon using api data, show a victory screen if user gets it right, show a defeat screen if they dont get it in 6 guesses
 function pullPokemon() {
   let newNumber = false;
   while (newNumber === false) {
@@ -44,7 +42,6 @@ function pullPokemon() {
   }
 }
 function validGuess(allNames, info1, info2) {
-  console.log(info1.name);
   let gameOver = false;
   DOMSelectors.button.addEventListener("click", function (submit) {
     submit.preventDefault();
@@ -88,6 +85,18 @@ function validGuess(allNames, info1, info2) {
         DOMSelectors.endContainer.insertAdjacentHTML(
           "afterend",
           "<p class='endMessage'>Congratulations! You guessed the Pokemon!</p><div class='buttonStorage'><button class='newGameButton' type='button'>New Game</button></div>"
+        );
+        gameOver = true;
+        let resetButton = document.querySelector(".newGameButton");
+        resetButton.addEventListener("click", function () {
+          resetGame();
+        });
+      }
+      if (guessed.length === 6) {
+        DOMSelectors.textBar.value = "";
+        DOMSelectors.endContainer.insertAdjacentHTML(
+          "afterend",
+          `<p class='endMessage'>Aw! You didn't guess the pokemon. The correct answer was ${info1.name}</p><div class='buttonStorage'><button class='newGameButton' type='button'>New Game</button></div>`
         );
         gameOver = true;
         let resetButton = document.querySelector(".newGameButton");
@@ -146,23 +155,14 @@ function hintGenerator(info1, info2) {
   }
 }
 function resetGame() {
-  // Reset the game state
   guessed = [];
   errorMessage = 0;
-
-  // Clear all the hints
   document.querySelectorAll(".hint").forEach((hint) => hint.remove());
-
-  // Remove the end message and reset button
   let oldMessage = document.querySelector(".endMessage");
   let oldButton = document.querySelector(".newGameButton");
-  if (oldMessage) oldMessage.remove();
-  if (oldButton) oldButton.remove();
-
-  // Re-fetch the Pokémon data and start a new game
-  pulled = []; // Clear previously pulled Pokémon
-  getData(URL); // Start a new game by fetching new Pokémon
+  oldMessage.remove();
+  oldButton.remove();
+  pulled = [];
+  getData(URL);
 }
 getData(URL);
-// blue is #3468a7
-//yellow is #fbcb0f
