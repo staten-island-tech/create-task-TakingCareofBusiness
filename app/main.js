@@ -14,7 +14,6 @@ const DOMSelectors = {
 const URL = "https://pokeapi.co/api/v2/pokemon?limit=100000&offset=0";
 let guessed = [];
 let pulled = [];
-let gameEnd = false;
 let errorMessage = 0;
 async function getData(URL) {
   try {
@@ -46,13 +45,13 @@ function pullPokemon() {
 }
 function validGuess(allNames, info1, info2) {
   console.log(info1.name);
-  gameEnd = false;
-  while ((gameEnd = false)) {
-    DOMSelectors.button.addEventListener("click", function (event) {
-      event.preventDefault();
-      let pokemonStatus = false;
-      let inputted = DOMSelectors.textBar.value;
-      let input = inputted.toLowerCase();
+  let gameOver = false;
+  DOMSelectors.button.addEventListener("click", function (event) {
+    event.preventDefault();
+    let pokemonStatus = false;
+    let inputted = DOMSelectors.textBar.value;
+    let input = inputted.toLowerCase();
+    if (guessed.length != 6 && gameOver != true) {
       allNames.forEach((title) => {
         if (input === title.name) {
           pokemonStatus = true;
@@ -90,10 +89,10 @@ function validGuess(allNames, info1, info2) {
           "afterend",
           "<p class='endMessage'>Congratulations! You guessed the Pokemon!</p>"
         );
-        gameEnd = true;
+        gameOver = true;
       }
-    });
-  }
+    }
+  });
 }
 function hintGenerator(info1, info2) {
   if (guessed.length === 1) {
