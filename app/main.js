@@ -162,7 +162,6 @@ function resetGame() {
   let oldButton = document.querySelector(".newGameButton");
   oldMessage.remove();
   oldButton.remove();
-  pulled = [];
   getData(URL);
 }
 getData(URL);
