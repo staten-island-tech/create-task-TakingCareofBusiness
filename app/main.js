@@ -19,6 +19,7 @@ async function getData(URL) {
     let usableAPI = pullPokemon();
     let response1 = await fetch(usableAPI[0]);
     let pulledPokemonInfo1 = await response1.json();
+    pulled.push(pulledPokemonInfo1.name);
     let response2 = await fetch(usableAPI[1]);
     let pulledPokemonInfo2 = await response2.json();
     let responseFull = await fetch(URL);
@@ -30,7 +31,6 @@ async function getData(URL) {
 //pull a random pokemon from api, have input bar for name of pokemon, only accept valid name of pokemon, add inputted pokemon to an array, make sure user doesn't repeat their guesses, have a separate list to make sure the same pokemon isnt pulled, when user inputs a guess compare the categories of the guess with the pulled pokemon using api data, show a vicotry screen if user gets it right, show a defeat screen if they dont get it in 6 guesses
 function pullPokemon() {
   let randomNumber = Math.floor(Math.random() * (1025 + 1));
-  console.log(randomNumber);
   let linkList = [
     `https://pokeapi.co/api/v2/pokemon-species/${randomNumber}`,
     `https://pokeapi.co/api/v2/pokemon/${randomNumber}`,
@@ -85,7 +85,7 @@ function hintGenerator(info1, info2) {
     if (!info1.evolves_from_species) {
       evolvesFrom = "This pokemon does not evolve from another pokemon!";
     } else {
-      evolvesFrom = `This pokemon evolves from ${info1.evolves_fromspecies.name}`;
+      evolvesFrom = `This pokemon evolves from a pokemon`;
     }
     DOMSelectors.hint2.insertAdjacentHTML(
       "beforeend",
