@@ -47,47 +47,53 @@ function pullPokemon() {
 function validGuess(allNames, info1, info2) {
   console.log(info1.name);
   gameEnd = false;
-  DOMSelectors.button.addEventListener("click", function (event) {
-    event.preventDefault();
-    let pokemonStatus = false;
-    let inputted = DOMSelectors.textBar.value;
-    let input = inputted.toLowerCase();
-    allNames.forEach((title) => {
-      if (input === title.name) {
-        pokemonStatus = true;
+  while ((gameEnd = false)) {
+    DOMSelectors.button.addEventListener("click", function (event) {
+      event.preventDefault();
+      let pokemonStatus = false;
+      let inputted = DOMSelectors.textBar.value;
+      let input = inputted.toLowerCase();
+      allNames.forEach((title) => {
+        if (input === title.name) {
+          pokemonStatus = true;
+        }
+      });
+      if (!pokemonStatus || guessed.includes(input)) {
+        DOMSelectors.textBar.value = "";
+        if (errorMessage === 0) {
+          DOMSelectors.errorText.insertAdjacentHTML(
+            "afterend",
+            "<p class='error'>Please input a real Pokemon name</p>"
+          );
+          errorMessage = 1;
+        }
+      }
+      if (
+        pokemonStatus &&
+        !guessed.includes(input) &&
+        !(input === info1.name)
+      ) {
+        DOMSelectors.textBar.value = "";
+        if (errorMessage != 0) {
+          let errors = document.querySelector(".error");
+          errors.remove();
+          errorMessage = 0;
+        }
+        guessed.push(input);
+        if (!(guessed.length === 0)) {
+          hintGenerator(info1, info2);
+        }
+      }
+      if (input === info1.name) {
+        DOMSelectors.textBar.value = "";
+        DOMSelectors.endContainer.insertAdjacentHTML(
+          "afterend",
+          "<p class='endMessage'>Congratulations! You guessed the Pokemon!</p>"
+        );
+        gameEnd = true;
       }
     });
-    if (!pokemonStatus || guessed.includes(input)) {
-      DOMSelectors.textBar.value = "";
-      if (errorMessage === 0) {
-        DOMSelectors.errorText.insertAdjacentHTML(
-          "afterend",
-          "<p class='error'>Please input a real Pokemon name</p>"
-        );
-        errorMessage = 1;
-      }
-    }
-    if (pokemonStatus && !guessed.includes(input) && !(input === info1.name)) {
-      DOMSelectors.textBar.value = "";
-      if (errorMessage != 0) {
-        let errors = document.querySelector(".error");
-        errors.remove();
-        errorMessage = 0;
-      }
-      guessed.push(input);
-      if (!(guessed.length === 0)) {
-        hintGenerator(info1, info2);
-      }
-    }
-    if (input === info1.name) {
-      DOMSelectors.textBar.value = "";
-      DOMSelectors.endContainer.insertAdjacentHTML(
-        "afterend",
-        "<p class='endMessage'>Congratulations! You guessed the Pokemon!</p>"
-      );
-      gameEnd = true;
-    }
-  });
+  }
 }
 function hintGenerator(info1, info2) {
   if (guessed.length === 1) {
